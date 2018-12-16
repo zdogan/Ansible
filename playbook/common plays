@@ -1,0 +1,27 @@
+#This playbook contains common plays that will be run on all nodes
+-name=Configure ntp file
+copy: src=ntp.conf dest=/etc/ntp.conf
+notify: restart ntp
+
+-name: Temporarily disable SElinux
+command: /usr/sbin/setenforce 0
+ignore_errors: True
+
+-name: Permanently diable SElinux
+selinux: state=disabled
+
+-name: Apply the acces.conf file template
+templae: src=etc/security/access.conf.j2 dest=/etc/security/access
+tags: access
+
+-name: Register installed version of sudo as a variable 
+shell: "'which yum; list installed sudo | awk ' /^sudo/ {print $2}'"
+register: sudo_version
+check_mode: no
+tags: sudo
+
+-name: Apply custom sudoer file
+template: src=etc/sudoers.j2 dest=/etc/sudoers backup=yes validate='/usr/sbin/visuo -cf%s"
+
+
+
