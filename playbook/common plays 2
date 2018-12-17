@@ -1,3 +1,15 @@
+ --- #This playbook deploys webserver with packages and users
+
+- hosts: all 
+
+  become: yes
+
+  become_method: sudo 
+
+  connection: ssh
+
+  tasks: 
+ 
  name: Install webserver
 
       package:
