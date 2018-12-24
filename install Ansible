@@ -1,0 +1,31 @@
+yum update -y
+
+rpm -ivh  http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+yum install ansible
+ansible version
+ssh-keygen
+ssh-copy-id -i root@192.168.4.100
+vi /etc/ansible/hosts
+cat
+[test-servers]
+192.168.4.100
+
+ansible -m ping 'test-servers'
+vi nginx.yml
+
+
+---ans
+- hosts : test-servers
+
+  tasks :
+   - name : install nginx
+      yum : pkg=nginx state=installed
+        
+     notify :
+      - start nginx
+
+   handers :
+   -name : start nginx
+   service : name=nginx statestarted
+ 
+ansible-playbook nginx.yml
